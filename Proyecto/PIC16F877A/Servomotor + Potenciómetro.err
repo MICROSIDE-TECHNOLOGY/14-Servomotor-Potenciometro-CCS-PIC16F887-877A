@@ -1,0 +1,5 @@
+Compiling E:\Martin Hdez\Desktop\CCS 16F\877A\Práctica 14\Servomotor + Potenciómetro on 24-feb.-22 at 15:19
+>>> Warning 203 "Servomotor + Potenciómetro.c" Line 46(1,1): Condition always TRUE
+      Memory usage:   ROM=2%      RAM=5% - 5%
+      0 Errors,  1 Warnings.
+Build Successful.

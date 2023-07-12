@@ -1,0 +1,28 @@
+[PROJECT]
+Target=Servomotor + Potenciómetro.hex
+Processor_Text=PIC16F887
+CCSVersion=5.076
+Compiler=PCM
+[Target Data]
+FileList=Servomotor + Potenciómetro.c
+[Servomotor + Potenciómetro.c]
+Type=4
+[mru-list]
+1=Servomotor + Potenciómetro.c
+
+[defines]
+buildcount=3
+
+[Opened Files]
+1=Servomotor + Potenciómetro.c
+t1=1
+Count=1
+[Units]
+Count=1
+1=Servomotor + Potenciómetro (main)
+
+[ProjectLog]
+Days=1
+D1=24-02-2022
+D1_L=1
+D1_L1=[55188]Project Closed.

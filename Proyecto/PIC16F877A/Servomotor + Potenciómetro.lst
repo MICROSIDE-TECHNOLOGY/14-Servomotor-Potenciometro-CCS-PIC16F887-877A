@@ -1,0 +1,269 @@
+CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 15:19
+
+               Filename:   E:\Martin Hdez\Desktop\CCS 16F\877A\Práctica 14\Servomotor + Potenciómetro.lst
+
+               ROM used:   166 words (2%)
+                           Largest free fragment is 2048
+               RAM used:   17 (5%) at main() level
+                           18 (5%) worst case
+               Stack used: 1 locations (0 in main + 1 for interrupts)
+               Stack size: 8
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   04B
+0003:  NOP
+0004:  MOVWF  7F
+0005:  SWAPF  03,W
+0006:  CLRF   03
+0007:  MOVWF  21
+0008:  MOVF   0A,W
+0009:  MOVWF  20
+000A:  CLRF   0A
+000B:  MOVF   04,W
+000C:  MOVWF  22
+000D:  MOVF   77,W
+000E:  MOVWF  23
+000F:  MOVF   78,W
+0010:  MOVWF  24
+0011:  MOVF   79,W
+0012:  MOVWF  25
+0013:  MOVF   7A,W
+0014:  MOVWF  26
+0015:  BCF    03.7
+0016:  BCF    03.5
+0017:  BTFSS  0B.5
+0018:  GOTO   01B
+0019:  BTFSC  0B.2
+001A:  GOTO   02C
+001B:  MOVF   22,W
+001C:  MOVWF  04
+001D:  MOVF   23,W
+001E:  MOVWF  77
+001F:  MOVF   24,W
+0020:  MOVWF  78
+0021:  MOVF   25,W
+0022:  MOVWF  79
+0023:  MOVF   26,W
+0024:  MOVWF  7A
+0025:  MOVF   20,W
+0026:  MOVWF  0A
+0027:  SWAPF  21,W
+0028:  MOVWF  03
+0029:  SWAPF  7F,F
+002A:  SWAPF  7F,W
+002B:  RETFIE
+002C:  BCF    0A.3
+002D:  BCF    0A.4
+002E:  GOTO   02F
+.................... /* 
+.................... AUTOR: MICROSIDE TECHNOLOGY S.A. DE C.V. 
+.................... FECHA: JUNIO 2019 
+.................... */ 
+....................  
+.................... /* 
+.................... --------------------------------------------------------------------------- 
+.................... Controlar la posición de un servomotor por medio de un potenciometro 
+.................... utilizando los modulos PWM y ADC 
+.................... --------------------------------------------------------------------------- 
+.................... */ 
+....................  
+.................... #include <16F877A.h>                            //Incluye el microcontrolador con el que se va a trabajar  
+.................... //////////// Standard Header file for the PIC16F877A device //////////////// 
+.................... /////////////////////////////////////////////////////////////////////////// 
+.................... ////        (C) Copyright 1996, 2014 Custom Computer Services          //// 
+.................... //// This source code may only be used by licensed users of the CCS C  //// 
+.................... //// compiler.  This source code may only be distributed to other      //// 
+.................... //// licensed users of the CCS C compiler.  No other use, reproduction //// 
+.................... //// or distribution is permitted without written permission.          //// 
+.................... //// Derivative programs created using this software in object code    //// 
+.................... //// form are not restricted in any way.                               //// 
+.................... /////////////////////////////////////////////////////////////////////////// 
+.................... #device PIC16F877A 
+....................  
+.................... #list 
+....................  
+.................... #DEVICE ADC=10                                   //Configura el ADC 
+.................... #use delay(clock=20Mhz, crystal)                //Tipo de oscilador y frecuencia dependiendo del microcontrolador  
+*
+003C:  MOVLW  03
+003D:  SUBWF  2C,F
+003E:  BTFSS  03.0
+003F:  GOTO   04A
+0040:  MOVLW  2C
+0041:  MOVWF  04
+0042:  BCF    03.7
+0043:  MOVF   00,W
+0044:  BTFSC  03.2
+0045:  GOTO   04A
+0046:  GOTO   048
+0047:  GOTO   048
+0048:  DECFSZ 00,F
+0049:  GOTO   047
+004A:  RETURN
+....................  
+....................   
+.................... int16 Duty;                                     //variable para ajustar el valor del PWM 
+.................... int1 SUBE; 
+....................  
+.................... #int_TIMER0 
+....................  
+.................... void TIMER0_isr() 
+....................  
+.................... { 
+....................  
+.................... output_high(PIN_C2);                           
+*
+002F:  BCF    2A.2
+0030:  MOVF   2A,W
+0031:  BSF    03.5
+0032:  MOVWF  07
+0033:  BCF    03.5
+0034:  BSF    07.2
+.................... SUBE=1; 
+0035:  BSF    29.0
+.................... set_timer0(10000);                              
+0036:  MOVLW  10
+0037:  MOVWF  01
+....................  
+0038:  BCF    0B.2
+0039:  BCF    0A.3
+003A:  BCF    0A.4
+003B:  GOTO   01B
+.................... } 
+....................  
+.................... void main() 
+*
+004B:  MOVF   03,W
+004C:  ANDLW  1F
+004D:  MOVWF  03
+004E:  MOVLW  FF
+004F:  MOVWF  2A
+0050:  BSF    03.5
+0051:  BSF    1F.0
+0052:  BSF    1F.1
+0053:  BSF    1F.2
+0054:  BCF    1F.3
+0055:  MOVLW  07
+0056:  MOVWF  1C
+0057:  BCF    03.7
+....................  
+.................... { 
+....................  
+....................   //setup_oscillator(OSC_8MHZ);                    //Configura oscilador interno 
+....................   set_tris_c (0xFB);                             // C2 salida de pulsos 
+0058:  MOVLW  FB
+0059:  MOVWF  07
+005A:  BCF    03.5
+005B:  MOVWF  2A
+....................   setup_timer_0 (T0_INTERNAL|T0_DIV_4); 
+005C:  BSF    03.5
+005D:  MOVF   01,W
+005E:  ANDLW  C0
+005F:  IORLW  01
+0060:  MOVWF  01
+....................   enable_interrupts (int_TIMER0) ; 
+0061:  BCF    03.5
+0062:  BSF    0B.5
+....................   enable_interrupts (GLOBAL) ; 
+0063:  MOVLW  C0
+0064:  IORWF  0B,F
+....................   setup_adc_ports (AN0);                        //configuracion deL canal ADC en A0 
+0065:  BSF    03.5
+0066:  BCF    1F.0
+0067:  BSF    1F.1
+0068:  BSF    1F.2
+0069:  BSF    1F.3
+....................   setup_adc (ADC_CLOCK_DIV_8);                  //Configura oscilador para la conversión 
+006A:  BCF    1F.6
+006B:  BCF    03.5
+006C:  BSF    1F.6
+006D:  BCF    1F.7
+006E:  BSF    03.5
+006F:  BSF    1F.7
+0070:  BCF    03.5
+0071:  BSF    1F.0
+....................   set_adc_channel (0);                          //conversion analogica por canal 0 
+0072:  MOVLW  00
+0073:  MOVWF  78
+0074:  MOVF   1F,W
+0075:  ANDLW  C7
+0076:  IORWF  78,W
+0077:  MOVWF  1F
+....................  
+....................     while(1) 
+....................  
+....................          { 
+....................  
+....................                 if (SUBE == 1) 
+0078:  BTFSS  29.0
+0079:  GOTO   08E
+....................  
+....................                { 
+....................                     delay_us (DUTY); 
+007A:  MOVF   28,W
+007B:  MOVWF  2B
+007C:  INCF   2B,F
+007D:  DECF   2B,F
+007E:  BTFSC  03.2
+007F:  GOTO   084
+0080:  MOVLW  FF
+0081:  MOVWF  2C
+0082:  CALL   03C
+0083:  GOTO   07D
+0084:  MOVF   27,W
+0085:  MOVWF  2C
+0086:  CALL   03C
+....................                     output_low (PIN_C2) ; 
+0087:  BCF    2A.2
+0088:  MOVF   2A,W
+0089:  BSF    03.5
+008A:  MOVWF  07
+008B:  BCF    03.5
+008C:  BCF    07.2
+....................                     SUBE = 0; 
+008D:  BCF    29.0
+....................                  } 
+....................  
+....................   
+....................  
+....................                   if (SUBE == 0) 
+008E:  BTFSC  29.0
+008F:  GOTO   0A2
+....................  
+....................                       { 
+....................                           DUTY = read_adc ();             //lectura del potenciometro 
+0090:  BSF    1F.2
+0091:  BTFSC  1F.2
+0092:  GOTO   091
+0093:  BSF    03.5
+0094:  MOVF   1E,W
+0095:  BCF    03.5
+0096:  MOVWF  27
+0097:  MOVF   1E,W
+0098:  MOVWF  28
+....................                           DUTY = DUTY * 2;                //ajuste de rango 
+0099:  BCF    03.0
+009A:  RLF    27,F
+009B:  RLF    28,F
+....................                           DUTY += 500; 
+009C:  MOVLW  F4
+009D:  ADDWF  27,F
+009E:  MOVLW  01
+009F:  BTFSC  03.0
+00A0:  MOVLW  02
+00A1:  ADDWF  28,F
+....................                        } 
+....................  
+....................                            while (SUBE == 0) ; 
+00A2:  BTFSS  29.0
+00A3:  GOTO   0A2
+00A4:  GOTO   078
+....................                 } 
+....................  
+.................... } 
+00A5:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F72   HS NOWDT PUT BROWNOUT NOLVP NOCPD NOWRT NODEBUG NOPROTECT
