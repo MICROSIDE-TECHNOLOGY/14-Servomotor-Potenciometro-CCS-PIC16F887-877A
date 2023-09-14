@@ -1,7 +1,7 @@
 [PROJECT]
 Target=Servomotor + Potenciómetro.hex
 Processor_Text=PIC16F877A
-CCSVersion=5.076
+CCSVersion=5.115d
 Compiler=PCM
 [Target Data]
 FileList=Servomotor + Potenciómetro.c
@@ -9,15 +9,41 @@ FileList=Servomotor + Potenciómetro.c
 Type=4
 [mru-list]
 1=Servomotor + Potenciómetro.c
-[Units]
-Count=1
-1=Servomotor + Potenciómetro (main)
 
 [defines]
-buildcount=1
+buildcount=6
 
 [ProjectLog]
-Days=1
+Days=3
 D1=24-02-2022
 D1_L=1
 D1_L1=[55245]Project Closed.
+D2=30-08-2023
+D2_L=2
+D2_L1=[38378]Project Opened.
+D2_L2=[38393]Project Closed.
+D3=14-09-2023
+D3_L=6
+D3_L1=[42434]Project Opened.
+D3_L2=[42569]Started Editing.
+D3_L3=[43283]Stopped Editing.
+D3_L4=[43873]Started Editing.
+D3_L5=[44524]Stopped Editing.
+TotalEdit=18
+TotalDebug=0
+D3_E=18
+D3_D=0
+D3_L6=[44524]Project Closed.
+
+[fileformats]
+forcecoff=0
+
+[Opened Files]
+1=Servomotor + Potenciómetro.c
+t1=1
+Count=2
+2=..\..\..\..\..\..\..\..\..\..\Program Files (x86)\PICCDEMO\Devices\16F877A.h
+t2=1
+[Units]
+Count=1
+1=Servomotor + Potenciómetro (main)

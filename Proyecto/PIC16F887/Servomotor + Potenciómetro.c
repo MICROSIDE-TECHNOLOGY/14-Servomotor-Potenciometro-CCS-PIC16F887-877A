@@ -1,7 +1,12 @@
-/*
-AUTOR: MICROSIDE TECHNOLOGY S.A. DE C.V.
-FECHA: JUNIO 2019
-*/
+/************************************************************************************************
+Company:
+Microside Technology Inc.
+File Name:
+Servomotor + Potenciometro.c
+Product Revision  :  1
+Device            :  X-TRAINER
+Driver Version    :  1.0
+************************************************************************************************/
 
 /*
 ---------------------------------------------------------------------------
@@ -10,62 +15,32 @@ utilizando los modulos PWM y ADC
 ---------------------------------------------------------------------------
 */
 
-#include <16F887.h>                            //Incluye el microcontrolador con el que se va a trabajar 
-#DEVICE ADC=10                                   //Configura el ADC
-#use delay(clock=20Mhz, crystal)                //Tipo de oscilador y frecuencia dependiendo del microcontrolador 
+#include <16F887.h> //Incluye el microcontrolador con el que se va a trabajar
+#DEVICE ADC = 10    // Configura el ADC para usar resolución de 10 bits (1024)
+#include "Servo.h"  // Librería para controlar 1 servo (Utiliza Timer1)
 
- 
-int16 Duty;                                     //variable para ajustar el valor del PWM
-int1 SUBE;
+int16 valor_ADC;    // Variable para guardar la entrada analógica
+int posicion;       // Variable para ajustar la posición dle servo
 
-#int_TIMER0
+// Escala el valor de una entrada de un rango a uno diferente
+double map( float value, float fromLow, float fromHigh, float toLow, float toHigh );
 
-void TIMER0_isr()
-
+void main( void )
 {
+    set_tris_c( 0xFB );                                    // C2 salida de pulsos
+    setup_servo( PIN_C2 );                                 // Configura el PIN C2 como el servo
+    setup_adc_ports( sAN0 );                               // Configuracion deL canal ADC en A0
+    setup_adc( ADC_CLOCK_DIV_8 );                          // Configura oscilador para la conversión
+    set_adc_channel( 0 );                                  // Conversion analogica por canal 0
 
-output_high(PIN_C2);                          
-SUBE=1;
-set_timer0(10000);                             
-
+    while ( 1 ) {
+        valor_ADC = read_adc();                            // Lectura del potenciometro
+        posicion = (int)map( valor_ADC, 0, 1024, 0, 180 ); // Obtiene la posición en grados
+        set_servo_angle( posicion );                       // Actualiza la posición del servo
+    }
 }
 
-void main()
-
+double map( float value, float fromLow, float fromHigh, float toLow, float toHigh )
 {
-
-  setup_oscillator(OSC_8MHZ);                    //Configura oscilador interno
-  set_tris_c (0xFB);                             // C2 salida de pulsos
-  setup_timer_0 (T0_INTERNAL|T0_DIV_4);
-  enable_interrupts (int_TIMER0) ;
-  enable_interrupts (GLOBAL) ;
-  setup_adc_ports (sAN0);                        //configuracion deL canal ADC en A0
-  setup_adc (ADC_CLOCK_DIV_8);                  //Configura oscilador para la conversión
-  set_adc_channel (0);                          //conversion analogica por canal 0
-
-    while(1)
-
-         {
-
-                if (SUBE == 1)
-
-               {
-                    delay_us (DUTY);
-                    output_low (PIN_C2) ;
-                    SUBE = 0;
-                 }
-
- 
-
-                  if (SUBE == 0)
-
-                      {
-                          DUTY = read_adc ();             //lectura del potenciometro
-                          DUTY = DUTY * 2;                //ajuste de rango
-                          DUTY += 500;
-                       }
-
-                           while (SUBE == 0) ;
-                }
-
+    return ( ( ( ( value - fromLow ) * ( toHigh - toLow ) ) / ( fromHigh - fromLow ) ) + toLow );
 }

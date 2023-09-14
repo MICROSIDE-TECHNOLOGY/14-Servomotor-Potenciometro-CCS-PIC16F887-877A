@@ -1,5 +1,5 @@
-004-005 @READ_PROGRAM_MEMORY8.P1
-004-005 @WRITE_PROGRAM_MEMORY8.P2
+004-005 @WRITE_PROGRAM_MEMORY8.P1
+004-005 @READ_PROGRAM_MEMORY8.P2
 008     PSP_DATA
 015     CCP_1_LOW
 015     CCP_1
@@ -14,11 +14,73 @@
 024     @INTERRUPT_AREA
 025     @INTERRUPT_AREA
 026     @INTERRUPT_AREA
-027-028 duty
-029.0   SUBE
-02A     @TRIS_C
-02B     MAIN.@SCRATCH1
-02C     @delay_us1.P1
+027     @INTERRUPT_AREA
+028     __servo_array_pointer
+029-030 __servoSignal
+031-034 __onOffMap
+035-036 __servo_pin
+037-038 valor_ADC
+039     posicion
+03A     @TRIS_C
+03B     set_servo_angle.angle
+03B-03C setup_servo.output_pin
+03B     MAIN.@SCRATCH1
+03C-03F set_servo_angle.__t
+03C     MAIN.@SCRATCH2
+03D     MAIN.@SCRATCH3
+03E     MAIN.@SCRATCH4
+03F-042 map.value
+040-043 set_servo_ms.seconds
+040-041 @ITOF.P1
+043-046 map.fromLow
+044-045 set_servo_ms.starting_point
+046-047 set_servo_ms.complement
+047-04A map.fromHigh
+048-04B @FLT.P1
+048-04B @SFTOI.P2
+048     set_servo_ms.@SCRATCH1
+049     set_servo_ms.@SCRATCH2
+04A     set_servo_ms.@SCRATCH3
+04B-04E map.toLow
+04B     set_servo_ms.@SCRATCH4
+04C-04F @FLT.P1
+04F-052 map.toHigh
+050     @FLT.@SCRATCH1
+051     @FLT.@SCRATCH2
+053     map.@SCRATCH1
+054     map.@SCRATCH2
+055     map.@SCRATCH3
+056     map.@SCRATCH4
+057-05A @DIVFF.P1
+057-05A @MULFF.P2
+057-05A @ADDFF.P3
+05B-05E @ADDFF.P1
+05B-05E @MULFF.P2
+05B-05E @DIVFF.P3
+05F     @MULFF.@SCRATCH1
+05F     @DIVFF.@SCRATCH1
+05F     @ADDFF.@SCRATCH1
+060     @MULFF.@SCRATCH2
+060     @DIVFF.@SCRATCH2
+060     @ADDFF.@SCRATCH2
+061     @MULFF.@SCRATCH3
+061     @DIVFF.@SCRATCH3
+061     @ADDFF.@SCRATCH3
+062     @MULFF.@SCRATCH4
+062     @DIVFF.@SCRATCH4
+062     @ADDFF.@SCRATCH4
+063     @MULFF.@SCRATCH5
+063     @DIVFF.@SCRATCH5
+063     @ADDFF.@SCRATCH5
+064     @DIVFF.@SCRATCH6
+064     @ADDFF.@SCRATCH6
+065     @ADDFF.@SCRATCH7
+066     @ADDFF.@SCRATCH8
+067     @WRITEBITA.P1
+067     TIMER1_isr.@SCRATCH1
+068     @WRITEBITA.P1
+068     TIMER1_isr.@SCRATCH2
+069-06A @WRITEBITA.P1
 077     @SCRATCH
 078     @SCRATCH
 078     _RETURN_
@@ -94,26 +156,36 @@ FFF     @INTERRUPT_AREA
 1FFF     @INTERRUPT_AREA
 
 ROM Allocation:
-00002F  TIMER0_isr
-00003C  @delay_us1
-00004B  @cinit1
-00004B  MAIN
-000057  @cinit2
+000031  @WRITEBITA
+000051  TIMER1_isr
+000090  setup_servo
+0000BD  @ITOF
+0000DA  @ADDFF
+00021B  @MULFF
+000290  @DIVFF
+00035A  map
+0003DF  @SFTOI
+0003FE  @FLT
+00043D  set_servo_angle
+000468  set_servo_ms
+00053D  MAIN
+00053D  @cinit1
+00054C  @cinit2
 
 Project Directory:
-    E:\Martin Hdez\Desktop\CCS 16F\877A\Práctica 14\
+    C:\Users\victo\OneDrive\Documentos\X-TRAINER-hands-on\CCS\PIC16F\14-Servomotor-Potenciometro-CCS-PIC16F887-877A\Proyecto\PIC16F877A\
 
 Project Files:
-    Servomotor + Potenciómetro.c                            [24-feb.-22 15:19  CRC=7161879C]
-    ..\..\..\..\..\Program Files\PICC\Devices\16F877A.h     [15-ene.-18 15:53  CRC=63418C39]
+    Servomotor + Potenciómetro.c                            [14-sep.-23 12:21  CRC=89D9FF84]
+    ..\..\..\..\..\..\..\..\..\..\Program Files (x86)\PICCDEMO\Devices\16F877A.h [02-may.-23 08:27  CRC=32478F9C]
+    Servo.h                                                 [01-sep.-23 14:23  CRC=CEFD5092]
 
-Source signature=37E4A00E
+Source signature=5A1C3044
 Program memory checksum=0000
-Program memory CRC=0000
-Hex file CRC=5A0A
+Hex file CRC=781E
 
 Units:
-    Servomotor + Potenciómetro (main)
+    C:\Users\victo\OneDrive\Documentos\X-TRAINER-hands-on\CCS\PIC16F\14-Servomotor-Potenciometro-CCS-PIC16F887-877A\Proyecto\PIC16F877A\Servomotor + Potenciómetro (main)
 
 Compiler Settings:
     Processor:      PIC16F877A
@@ -122,7 +194,10 @@ Compiler Settings:
     Opt Level:      9
     Short,Int,Long: UNSIGNED: 1,8,16
     Float,Double:   32,32
-    Compile Mode:       CCS5
+    Compile Mode:   CCS5
+
+Compiler operating in Evaluation Mode
+To obtain a fully enabled compiler visit www.ccsinfo.com/products
 
 Output Files:
     XREF file:   Servomotor + Potenciómetro.xsym
